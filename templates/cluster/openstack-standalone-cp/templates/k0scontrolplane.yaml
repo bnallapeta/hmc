@@ -1,0 +1,52 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: K0sControlPlane
+metadata:
+  name: {{ include "k0scontrolplane.name" . }}
+spec:
+  replicas: {{ .Values.controlPlaneNumber }}
+  version: {{ .Values.k0s.version }}
+  k0sConfigSpec:
+    args:
+      - --enable-worker
+      - --enable-cloud-provider
+      - --kubelet-extra-args="--cloud-provider=external"
+      - --disable-components=konnectivity-server
+    k0s:
+      apiVersion: k0s.k0sproject.io/v1beta1
+      kind: ClusterConfig
+      metadata:
+        name: k0s
+      spec:
+        api:
+          extraArgs:
+            anonymous-auth: "true"
+        network:
+          provider: calico
+          calico:
+            mode: # todobnr
+        extensions:
+          helm:
+            repositories: # todobnr
+              - name: 
+                url: 
+              - name: 
+                url: 
+            charts:
+              - name: # todobnr
+                namespace: 
+                chartname: 
+                version: 
+                values: |
+                  
+              - name: # todobnr
+                namespace: 
+                chartname: 
+                version: 
+                values: |
+                  
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+      kind: OpenStackMachineTemplate
+      name: {{ include "openstackmachinetemplate.controlplane.name" . }}
+      namespace: {{ .Release.Namespace }}

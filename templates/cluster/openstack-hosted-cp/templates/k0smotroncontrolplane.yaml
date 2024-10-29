@@ -1,0 +1,46 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: K0smotronControlPlane
+metadata:
+  name: {{ include "k0smotroncontrolplane.name" . }}
+spec:
+  replicas: {{ .Values.controlPlaneNumber }}
+  version: {{ .Values.k0s.version | replace "+" "-" }}
+  {{- with .Values.k0smotron.service }}
+  service:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  controllerPlaneFlags:
+  - "--enable-cloud-provider=true"
+  - "--debug=true"
+  k0sConfig:
+    apiVersion: k0s.k0sproject.io/v1beta1
+    kind: ClusterConfig
+    metadata:
+      name: k0s
+    spec:
+      network:
+        provider: calico
+        calico:
+          mode: #todobnr
+      extensions:
+        helm:
+          repositories:
+            - name: #todobnr
+              url: #todobnr
+            - name: #todobnr
+              url: #todobnr
+          charts: #todobnr
+            - name: 
+              namespace: 
+              chartname: 
+              version: 
+              order: 
+              values: |
+                
+            - name: #todobnr
+              namespace: 
+              chartname: 
+              version: 
+              order: 
+              values: |
+                
