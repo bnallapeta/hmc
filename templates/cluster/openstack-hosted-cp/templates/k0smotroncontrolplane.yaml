@@ -21,26 +21,48 @@ spec:
       network:
         provider: calico
         calico:
-          mode: #todobnr
+          mode: vxlan
       extensions:
         helm:
           repositories:
-            - name: #todobnr
-              url: #todobnr
-            - name: #todobnr
-              url: #todobnr
-          charts: #todobnr
-            - name: 
-              namespace: 
-              chartname: 
-              version: 
-              order: 
+            - name: openstack
+              url: https://github.com/kubernetes/cloud-provider-openstack
+          charts:
+            - name: openstack-ccm
+              chartname: openstack/openstack-cloud-controller-manager
+              version: 2.31.1
+              order: 1
+              namespace: kube-system
+              # bnr todo: below sections needs to be looked at: global, secret
               values: |
-                
-            - name: #todobnr
-              namespace: 
-              chartname: 
-              version: 
-              order: 
+                cloudConfig:
+                  global:
+                    auth-url: {{ .Values.openstack.authURL }}
+                    region: {{ .Values.openstack.region }}
+                    {{- if .Values.openstack.useApplicationCredentials }}
+                    application-credential-id: {{ .Values.openstack.applicationCredentialID }}
+                    application-credential-secret: {{ .Values.openstack.applicationCredentialSecret }}
+                    {{- else }}
+                    username: {{ .Values.openstack.username }}
+                    password: {{ .Values.openstack.password }}
+                    {{- end }}
+                secret:
+                  enabled: true
+                  name: cloud-config
+                  create: false
+
+            - name: openstack-csi
+              chartname: openstack/openstack-cinder-csi
+              version: 2.31.3
+              order: 2
+              namespace: kube-system
               values: |
+                storageClass:
+                  enabled: true
+                  delete:
+                    isDefault: false
+                    allowVolumeExpansion: true
+                  retain:
+                    isDefault: false
+                    allowVolumeExpansion: false
                 
