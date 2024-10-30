@@ -8,14 +8,10 @@ spec:
       {{- if not ( .Values.sshPublicKey | empty) }}
       sshPublicKey: {{ .Values.sshPublicKey }}
       {{- end }}
-
-      # ProviderID is the unique identifier as specified by the cloud provider
+      
       providerID: {{ .Values.providerID }}
-
-      # The flavor reference for the flavor for your server instance
       flavor: {{ .Values.flavor }}
       
-      # The image to use for your server instance
       image:
         filter:
           name: {{ .Values.image.filter.name }}
@@ -24,13 +20,11 @@ spec:
             - {{ $tag }}
             {{- end }}
       
-      # Ports to be attached to the server instance. If not specified a default port will be added for the default cluster network.
       {{- if gt (len .Values.portOpts) 0 }}
       portOpts:
         {{ .Values.portOpts | toYaml | nindent 8 }}
       {{- end }}
 
-      # SecurityGroups is a list of security group names or IDs to associate with the server instance.
       {{- if gt (len .Values.securityGroups) 0 }}
       securityGroups:
         {{ .Values.securityGroups | toYaml | nindent 8 }}

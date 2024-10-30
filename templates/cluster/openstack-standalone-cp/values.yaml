@@ -1,0 +1,96 @@
+# cluster parameters
+controlPlaneNumber: 3
+workersNumber: 2
+
+clusterNetwork:
+  pods:
+    cidrBlocks:
+    - "10.244.0.0/16" # cidr for pod network
+  services:
+    cidrBlocks:
+    - "10.96.0.0/12" # cidr for service network
+
+# openstack cluster parameters
+openstack:
+  authURL: "" # Keystone URL
+  region: "" # OpenStack region
+  username: "" # OpenStack username
+  password: "" # OpenStack password
+  useApplicationCredentials: false # set to true if using application credentials instead of username/password
+  applicationCredentialID: "" # OpenStack application credential ID (if applicable)
+  applicationCredentialSecret: "" # OpenStack application credential secret (if applicable)
+
+# bnr todo: check this
+clusterIdentity:
+  name: ""
+  namespace: hmc-system
+
+network:
+  name: "" # Name of the OpenStack network
+  subnets:
+    name: "" # Name of the OpenStack subnet
+
+bastion:
+  enabled: false # Enable bastion server for SSH access
+  spec:
+    providerID: "" # Provider ID of the bastion server
+    flavor: "" # Flavor of the bastion server
+    image: # Image of the bastion server
+      filter:
+        name: "" # Name of the image
+        tags: {} # Tags for filtering the image
+
+# Determines whether OpenStack security groups for the cluster will be managed by the OpenStack provider or specfic rules will be provided
+# managedSecurityGroups:
+#   allNodesSecurityGroupRules: [] # Security group rules for all nodes
+
+# managedSubnets:
+#   - cidr: ""
+#     dnsNameservers: []
+
+# Enable/disable external load balancer for the API server
+apiServerLoadBalancer:
+  enabled: true
+
+# If ExternalNetwork is not defined or is empty the controller will use any existing external network as long as there is only one.
+externalNetwork:
+  id: ""
+  filter:
+    name: ""
+    tags: []
+
+# openstack control plane parameters
+controlplane:
+  sshPublicKey: ""  # SSH public key for accessing nodes
+  providerID: ""  # Unique ID for the instance provider
+  flavor: ""  # OpenStack flavor for instance size
+  image:
+    filter:
+      name: ""  # Name of the image
+      tags: []  # Tags for filtering the image
+  portOpts: []  # Ports to be attached to the server instance
+  securityGroups: [] # security groups to be assigned to the instance
+
+# openstack worker parameters
+worker:
+  sshPublicKey: ""  # SSH public key for accessing nodes
+  providerID: ""  # Unique ID for the instance provider
+  flavor: ""  # OpenStack flavor for instance size
+  image:
+    filter:
+      name: ""  # Name of the image
+      tags: []  # Tags for filtering the image
+  portOpts: []  # Ports to be attached to the server instance
+  securityGroups: [] # security groups to be assigned to the instance
+
+
+# K0smotron parameters
+k0smotron:
+  service:
+    type: LoadBalancer # Service type for exposing control plane
+    apiPort: 6443 # API server port
+    konnectivityPort: 8132 # Konnectivity server port
+
+# K0s parameters
+k0s:
+  version: v1.31.1+k0s.1 # K0s version

@@ -5,4 +5,27 @@ metadata:
 spec:
   template:
     spec:
-      # todobnr
+      {{- if not ( .Values.worker.sshPublicKey | empty) }}
+      sshPublicKey: {{ .Values.worker.sshPublicKey }}
+      {{- end }}
+      
+      providerID: {{ .Values.worker.providerID }}
+      flavor: {{ .Values.worker.flavor }}
+      
+      image:
+        filter:
+          name: {{ .Values.worker.image.filter.name }}
+          tags:
+            {{- range $tag := .Values.worker.image.filter.tags }}
+            - {{ $tag }}
+            {{- end }}
+      
+      {{- if gt (len .Values.worker.portOpts) 0 }}
+      portOpts:
+        {{ .Values.worker.portOpts | toYaml | nindent 8 }}
+      {{- end }}
+
+      {{- if gt (len .Values.worker.securityGroups) 0 }}
+      securityGroups:
+        {{ .Values.worker.securityGroups | toYaml | nindent 8 }}
+      {{- end }}

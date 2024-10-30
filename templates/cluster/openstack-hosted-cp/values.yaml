@@ -63,14 +63,11 @@ externalNetwork:
 sshPublicKey: ""  # SSH public key for accessing nodes
 providerID: ""  # Unique ID for the instance provider
 flavor: ""  # OpenStack flavor for instance size
-
 image:
   filter:
     name: ""  # Name of the image
     tags: []  # Tags for filtering the image
-
 portOpts: []  # Ports to be attached to the server instance
-
 securityGroups: [] # security groups to be assigned to the instance
 
 # K0smotron parameters

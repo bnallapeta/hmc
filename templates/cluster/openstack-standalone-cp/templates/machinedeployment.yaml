@@ -21,6 +21,6 @@ spec:
           kind: K0sWorkerConfigTemplate
           name: {{ include "k0sworkerconfigtemplate.name" . }}
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: OpenStackMachineTemplate
         name: {{ include "openstackmachinetemplate.worker.name" . }}
