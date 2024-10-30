@@ -3,10 +3,9 @@ kind: InfrastructureProvider
 metadata:
   name: openstack
 spec:
-  version: # todobnr
+  version: v0.11.0
   {{- if .Values.configSecret.name }}
   configSecret:
     name: {{ .Values.configSecret.name }}
     namespace: {{ .Values.configSecret.namespace | default .Release.Namespace | trunc 63 }}
   {{- end }}
-  # todobnr

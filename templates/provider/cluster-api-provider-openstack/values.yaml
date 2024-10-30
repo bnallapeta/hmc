@@ -1,7 +1,4 @@
 configSecret:
   create: true
-  name: "aws-variables"
+  name: "openstack-variables"
   namespace: ""
-
-config:
-  AWS_B64ENCODED_CREDENTIALS: Cg==
