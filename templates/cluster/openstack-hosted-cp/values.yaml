@@ -20,7 +20,6 @@ openstack:
   applicationCredentialID: "" # OpenStack application credential ID (if applicable)
   applicationCredentialSecret: "" # OpenStack application credential secret (if applicable)
 
-# bnr todo: check this
 clusterIdentity:
   name: ""
   namespace: hmc-system
