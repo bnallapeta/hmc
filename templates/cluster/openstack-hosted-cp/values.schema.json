@@ -6,8 +6,7 @@
       "controlPlaneNumber",
       "workersNumber",
       "openstack",
-      "clusterIdentity",
-      "network"
+      "clusterIdentity"
     ],
     "properties": {
       "controlPlaneNumber": {
@@ -96,15 +95,15 @@
         "description": "OpenStack cluster identity object reference",
         "required": [
           "name",
-          "namespace"
+          "cloudName"
         ],
         "properties": {
           "name": {
             "description": "Cluster identity object name",
             "type": "string"
           },
-          "namespace": {
-            "description": "Cluster identity object namespace",
+          "cloudName": {
+            "description": "Name of the entry in the clouds.yaml file to use",
             "type": "string"
           }
         }
@@ -252,9 +251,28 @@
         "type": "array",
         "description": "Security groups to be assigned to the instance",
         "items": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+          "filter": {
+            "type": "object",
+            "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the security group to filter by"
+            },
+            "description": {
+              "type": "string",
+              "description": "Optional: description for filtering"
+            },
+            "projectID": {
+              "type": "string",
+              "description": "Optional: project ID for filtering"
+            }
+            }
+          }
+          }
         }
-      },
+        },
       "k0smotron": {
         "type": "object",
         "description": "K0smotron parameters",

@@ -22,12 +22,11 @@ openstack:
 
 clusterIdentity:
   name: ""
-  namespace: hmc-system
+  cloudName: ""
+  region: ""
 
-network:
-  name: "" # Name of the OpenStack network
-  subnets:
-    name: "" # Name of the OpenStack subnet
+# network:
+#   id: ""
 
 bastion:
   enabled: false # Enable bastion server for SSH access
@@ -37,7 +36,6 @@ bastion:
     image: # Image of the bastion server
       filter:
         name: "" # Name of the image
-        tags: {} # Tags for filtering the image
 
 # Determines whether OpenStack security groups for the cluster will be managed by the OpenStack provider or specfic rules will be provided
 # managedSecurityGroups:
@@ -52,36 +50,40 @@ apiServerLoadBalancer:
   enabled: true
 
 # If ExternalNetwork is not defined or is empty the controller will use any existing external network as long as there is only one.
-externalNetwork:
-  id: ""
-  filter:
-    name: ""
-    tags: []
+# externalNetwork:
+#   id: ""
 
 # openstack control plane parameters
 controlplane:
   sshPublicKey: ""  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
-  flavor: ""  # OpenStack flavor for instance size
+  flavor: "m1.small"  # OpenStack flavor for instance size
   image:
     filter:
-      name: ""  # Name of the image
-      tags: []  # Tags for filtering the image
+      name: "ubuntu-20.04"  # Name of the image
   portOpts: []  # Ports to be attached to the server instance
-  securityGroups: [] # security groups to be assigned to the instance
+  securityGroups:
+    # - id: ""  # UUID of the security group
+    - filter:
+        name: "default"  # Name of the security group to filter by (replace with appropriate name)
+        description: ""  # Optional: description for filtering
+        projectID: ""  # Optional: project ID for filtering
 
 # openstack worker parameters
 worker:
   sshPublicKey: ""  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
-  flavor: ""  # OpenStack flavor for instance size
+  flavor: "m1.small"  # OpenStack flavor for instance size
   image:
     filter:
-      name: ""  # Name of the image
-      tags: []  # Tags for filtering the image
+      name: "ubuntu-20.04"  # Name of the image
   portOpts: []  # Ports to be attached to the server instance
-  securityGroups: [] # security groups to be assigned to the instance
-
+  securityGroups:
+    # - id: ""  # UUID of the security group
+    - filter:
+        name: "default"  # Name of the security group to filter by (replace with appropriate name)
+        description: ""  # Optional: description for filtering
+        projectID: ""  # Optional: project ID for filtering
 
 # K0smotron parameters
 k0smotron:

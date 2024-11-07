@@ -219,7 +219,9 @@ KIND_CLUSTER_NAME ?= hmc-dev
 KIND_NETWORK ?= kind
 REGISTRY_NAME ?= hmc-local-registry
 REGISTRY_PORT ?= 5001
-REGISTRY_REPO ?= oci://127.0.0.1:$(REGISTRY_PORT)/charts
+# REGISTRY_REPO ?= oci://127.0.0.1:$(REGISTRY_PORT)/charts
+REGISTRY_REPO ?= oci://ghcr.io/bnallapeta/charts
+
 DEV_PROVIDER ?= aws
 REGISTRY_IS_OCI = $(shell echo $(REGISTRY_REPO) | grep -q oci && echo true || echo false)
 AWS_CREDENTIALS=${AWS_B64ENCODED_CREDENTIALS}
