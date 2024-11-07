@@ -28,7 +28,7 @@ spec:
           helm:
             repositories:
               - name: openstack
-                url: https://github.com/kubernetes/cloud-provider-openstack
+                url: https://kubernetes.github.io/cloud-provider-openstack/
             charts:
               - name: openstack-ccm
                 chartname: openstack/openstack-cloud-controller-manager
