@@ -3,8 +3,6 @@ kind: K0sControlPlane
 metadata:
   name: {{ include "k0scontrolplane.name" . }}
 spec:
-  replicas: {{ .Values.controlPlaneNumber }}
-  version: {{ .Values.k0s.version }}
   k0sConfigSpec:
     args:
       - --enable-worker
@@ -20,10 +18,6 @@ spec:
         api:
           extraArgs:
             anonymous-auth: "true"
-        network:
-          provider: calico
-          calico:
-            mode: vxlan
         extensions:
           helm:
             repositories:
@@ -65,10 +59,15 @@ spec:
                     retain:
                       isDefault: false
                       allowVolumeExpansion: false
-                  
+        network:
+          provider: calico
+          calico:
+            mode: vxlan
   machineTemplate:
     infrastructureRef:
       apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
       kind: OpenStackMachineTemplate
       name: {{ include "openstackmachinetemplate.controlplane.name" . }}
       namespace: {{ .Release.Namespace }}
+  replicas: {{ .Values.controlPlaneNumber }}
+  version: {{ .Values.k0s.version }}

@@ -5,11 +5,6 @@ metadata:
 spec:
   template:
     spec:
-      {{- if not ( .Values.worker.sshPublicKey | empty) }}
-      sshPublicKey: {{ .Values.worker.sshPublicKey }}
-      {{- end }}
-      
-      providerID: {{ .Values.worker.providerID }}
       flavor: {{ .Values.worker.flavor }}
       
       image:
@@ -25,7 +20,13 @@ spec:
         {{ .Values.worker.portOpts | toYaml | nindent 8 }}
       {{- end }}
 
+      providerID: {{ .Values.worker.providerID }}
+
       {{- if gt (len .Values.worker.securityGroups) 0 }}
       securityGroups:
         {{ .Values.worker.securityGroups | toYaml | nindent 8 }}
       {{- end }}
+
+      {{- if not ( .Values.worker.sshPublicKey | empty) }}
+      sshPublicKey: {{ .Values.worker.sshPublicKey }}
+      {{- end }}      

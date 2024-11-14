@@ -25,9 +25,6 @@ clusterIdentity:
   cloudName: ""
   region: ""
 
-# network:
-#   id: ""
-
 bastion:
   enabled: false # Enable bastion server for SSH access
   spec:

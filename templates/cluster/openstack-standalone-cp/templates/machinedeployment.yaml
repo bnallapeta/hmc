@@ -13,14 +13,14 @@ spec:
       labels:
         cluster.x-k8s.io/cluster-name: {{ include "cluster.name" . }}
     spec:
-      version: {{ regexReplaceAll "\\+k0s.+$" .Values.k0s.version "" }}
-      clusterName: {{ include "cluster.name" . }}
       bootstrap:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: K0sWorkerConfigTemplate
           name: {{ include "k0sworkerconfigtemplate.name" . }}
+      clusterName: {{ include "cluster.name" . }}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: OpenStackMachineTemplate
         name: {{ include "openstackmachinetemplate.worker.name" . }}
+      version: {{ regexReplaceAll "\\+k0s.+$" .Values.k0s.version "" }}        

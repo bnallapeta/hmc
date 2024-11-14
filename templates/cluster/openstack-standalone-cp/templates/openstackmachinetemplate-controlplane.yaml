@@ -5,13 +5,8 @@ metadata:
 spec:
   template:
     spec:
-      {{- if not ( .Values.controlplane.sshPublicKey | empty) }}
-      sshPublicKey: {{ .Values.controlplane.sshPublicKey }}
-      {{- end }}
-      
-      providerID: {{ .Values.controlplane.providerID }}
       flavor: {{ .Values.controlplane.flavor }}
-      
+
       image:
         filter:
           name: {{ .Values.controlplane.image.filter.name }}
@@ -25,7 +20,13 @@ spec:
         {{ .Values.controlplane.portOpts | toYaml | nindent 8 }}
       {{- end }}
 
+      providerID: {{ .Values.controlplane.providerID }}
+
       {{- if gt (len .Values.controlplane.securityGroups) 0 }}
       securityGroups:
         {{ .Values.controlplane.securityGroups | toYaml | nindent 8 }}
+      {{- end }}
+
+      {{- if not ( .Values.controlplane.sshPublicKey | empty) }}
+      sshPublicKey: {{ .Values.controlplane.sshPublicKey }}
       {{- end }}
