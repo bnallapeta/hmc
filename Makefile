@@ -221,7 +221,7 @@ REGISTRY_NAME ?= hmc-local-registry
 REGISTRY_PORT ?= 5001
 REGISTRY_REPO ?= oci://127.0.0.1:$(REGISTRY_PORT)/charts
 
-DEV_PROVIDER ?= aws
+DEV_PROVIDER ?= openstack
 REGISTRY_IS_OCI = $(shell echo $(REGISTRY_REPO) | grep -q oci && echo true || echo false)
 AWS_CREDENTIALS=${AWS_B64ENCODED_CREDENTIALS}
 
@@ -343,6 +343,10 @@ dev-vsphere-creds: envsubst
 	@NAMESPACE=$(NAMESPACE) $(ENVSUBST) -no-unset -i config/dev/vsphere-credentials.yaml | $(KUBECTL) apply -f -
 
 dev-eks-creds: dev-aws-creds
+
+.PHONY: dev-openstack-creds
+dev-openstack-creds: envsubst
+	@NAMESPACE=$(NAMESPACE) $(ENVSUBST) -i config/dev/openstack-credentials.yaml | $(KUBECTL) apply -f -
 
 .PHONY: dev-apply ## Apply the development environment by deploying the kind cluster, local registry and the HMC helm chart.
 dev-apply: kind-deploy registry-deploy dev-push dev-deploy dev-templates dev-release

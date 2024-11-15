@@ -5,25 +5,26 @@ workersNumber: 2
 clusterNetwork:
   pods:
     cidrBlocks:
-    - "10.244.0.0/16" # cidr for pod network
+    - "10.244.0.0/16"
   services:
     cidrBlocks:
-    - "10.96.0.0/12" # cidr for service network
+    - "10.96.0.0/12"
+  serviceDomain: "cluster.local"
 
 # openstack cluster parameters
 openstack:
-  authURL: "" # Keystone URL
-  region: "" # OpenStack region
-  username: "" # OpenStack username
+  authURL: "https://keystone.ic-eu.ssl.mirantis.net/" # Keystone URL
+  region: "RegionOne" # OpenStack region
+  username: "bnallapeta" # OpenStack username
   password: "" # OpenStack password
   useApplicationCredentials: false # set to true if using application credentials instead of username/password
   applicationCredentialID: "" # OpenStack application credential ID (if applicable)
   applicationCredentialSecret: "" # OpenStack application credential secret (if applicable)
 
 clusterIdentity:
-  name: ""
-  cloudName: ""
-  region: ""
+  name: "cloud-config"
+  cloudName: "openstack"
+  region: "RegionOne"
 
 bastion:
   enabled: false # Enable bastion server for SSH access
@@ -42,6 +43,11 @@ bastion:
 #   - cidr: ""
 #     dnsNameservers: []
 
+managedSubnets:
+- cidr: 10.6.0.0/24
+  dnsNameservers:
+  - 8.8.8.8
+
 # Enable/disable external load balancer for the API server
 apiServerLoadBalancer:
   enabled: true
@@ -52,12 +58,12 @@ apiServerLoadBalancer:
 
 # openstack control plane parameters
 controlplane:
-  sshPublicKey: ""  # SSH public key for accessing nodes
+  sshPublicKey: "bnr-test"  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
-  flavor: "m1.small"  # OpenStack flavor for instance size
+  flavor: "m1.medium"  # OpenStack flavor for instance size
   image:
     filter:
-      name: "ubuntu-20.04"  # Name of the image
+      name: "ubuntu-2204-kube-v1.30.5"  # Name of the image
   portOpts: []  # Ports to be attached to the server instance
   securityGroups:
     # - id: ""  # UUID of the security group
@@ -68,12 +74,12 @@ controlplane:
 
 # openstack worker parameters
 worker:
-  sshPublicKey: ""  # SSH public key for accessing nodes
+  sshPublicKey: "bnr-test"  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
-  flavor: "m1.small"  # OpenStack flavor for instance size
+  flavor: "m1.medium"  # OpenStack flavor for instance size
   image:
     filter:
-      name: "ubuntu-20.04"  # Name of the image
+      name: "ubuntu-2204-kube-v1.30.5"  # Name of the image
   portOpts: []  # Ports to be attached to the server instance
   securityGroups:
     # - id: ""  # UUID of the security group

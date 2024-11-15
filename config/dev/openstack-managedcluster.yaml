@@ -11,9 +11,9 @@ spec:
     workersNumber: 1
     region: RegionOne
     controlPlane:
-      flavor: m1.small
-      image: ubuntu-20.04
+      flavor: m1.medium
+      image: ubuntu-2204-kube-v1.30.5
     worker:
-      flavor: m1.small
-      image: ubuntu-20.04
-    authURL: ${OPENSTACK_AUTH_URL}
+      flavor: m1.medium
+      image: ubuntu-2204-kube-v1.30.5
+    authURL: ${OS_AUTH_URL}

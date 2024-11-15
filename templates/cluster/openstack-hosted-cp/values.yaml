@@ -9,6 +9,7 @@ clusterNetwork:
   services:
     cidrBlocks:
     - "10.96.0.0/12" # cidr for service network
+  serviceDomain: "cluster.local"
 
 # openstack cluster parameters
 openstack:
