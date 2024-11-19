@@ -12,8 +12,12 @@ spec:
     region: RegionOne
     controlPlane:
       flavor: m1.medium
-      image: ubuntu-2204-kube-v1.30.5
+      image:
+        filter:
+          name: "ubuntu-2204-kube-v1.30.5"
     worker:
       flavor: m1.medium
-      image: ubuntu-2204-kube-v1.30.5
+      image:
+        filter:
+          name: "ubuntu-2204-kube-v1.30.5"
     authURL: ${OS_AUTH_URL}
