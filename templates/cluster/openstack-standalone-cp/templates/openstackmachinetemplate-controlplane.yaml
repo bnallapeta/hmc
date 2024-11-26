@@ -6,27 +6,24 @@ spec:
   template:
     spec:
       flavor: {{ .Values.controlplane.flavor }}
-
+      cloudName: openstack
       image:
         filter:
           name: {{ .Values.controlplane.image.filter.name }}
+          {{- if .Values.controlplane.image.filter.tags }}
           tags:
             {{- range $tag := .Values.controlplane.image.filter.tags }}
             - {{ $tag }}
             {{- end }}
-      
+          {{- end }}
       {{- if gt (len .Values.controlplane.portOpts) 0 }}
       portOpts:
         {{ .Values.controlplane.portOpts | toYaml | nindent 8 }}
       {{- end }}
-
-      providerID: {{ .Values.controlplane.providerID }}
-
       {{- if gt (len .Values.controlplane.securityGroups) 0 }}
       securityGroups:
         {{ .Values.controlplane.securityGroups | toYaml | nindent 8 }}
       {{- end }}
-
       {{- if not ( .Values.controlplane.sshPublicKey | empty) }}
       sshPublicKey: {{ .Values.controlplane.sshPublicKey }}
       {{- end }}

@@ -43,12 +43,12 @@ spec:
                     application-credential-secret: {{ .Values.openstack.applicationCredentialSecret }}
                     {{- else }}
                     username: {{ .Values.openstack.username }}
+                    password: {{ .Values.openstack.password }}
                     {{- end }}
                 secret:
                   enabled: true
-                  name: cloud-config
+                  name: openstack-cloud-config
                   create: false
-
             - name: openstack-csi
               chartname: openstack/openstack-cinder-csi
               version: 2.31.3

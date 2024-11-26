@@ -142,10 +142,6 @@
           "spec": {
             "type": "object",
             "properties": {
-              "providerID": {
-                "type": ["string", "null"],
-                "description": "Provider ID of the bastion server"
-              },
               "flavor": {
                 "type": ["string", "null"],
                 "description": "Flavor of the bastion server"
@@ -211,10 +207,6 @@
       "sshPublicKey": {
         "type": "string",
         "description": "SSH public key for accessing nodes"
-      },
-      "providerID": {
-        "type": ["string", "null"],
-        "description": "Unique ID for the instance provider"
       },
       "flavor": {
         "type": "string",

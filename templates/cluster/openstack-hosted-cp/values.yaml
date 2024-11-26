@@ -32,15 +32,14 @@ clusterIdentity:
 bastion:
   enabled: false # Enable bastion server for SSH access
   spec:
-    providerID: "" # Provider ID of the bastion server
     flavor: "" # Flavor of the bastion server
     image: # Image of the bastion server
       filter:
         name: "" # Name of the image
 
 # Determines whether OpenStack security groups for the cluster will be managed by the OpenStack provider or specfic rules will be provided
-# managedSecurityGroups:
-#   allNodesSecurityGroupRules: [] # Security group rules for all nodes
+managedSecurityGroups:
+  allowAllInClusterTraffic: false
 
 # managedSubnets:
 #   - cidr: ""
@@ -56,14 +55,12 @@ apiServerLoadBalancer:
 
 # openstack machine parameters
 sshPublicKey: ""  # SSH public key for accessing nodes
-providerID: ""  # Unique ID for the instance provider
-flavor: "m1.small"  # OpenStack flavor for instance size
+flavor: ""  # OpenStack flavor for instance size
 image:
   filter:
-    name: "ubuntu-20.04"  # Name of the image
+    name: ""  # Name of the image
 portOpts: []  # Ports to be attached to the server instance
 securityGroups:
-  # - id: ""  # UUID of the security group
   - filter:
       name: "default"  # Name of the security group to filter by (replace with appropriate name)
       description: ""  # Optional: description for filtering
@@ -78,4 +75,4 @@ k0smotron:
 
 # K0s parameters
 k0s:
-  version: v1.31.1+k0s.1 # K0s version
+  version: v1.30.5+k0s.0 # K0s version

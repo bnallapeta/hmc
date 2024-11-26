@@ -8,24 +8,22 @@ spec:
       {{- if not ( .Values.sshPublicKey | empty) }}
       sshPublicKey: {{ .Values.sshPublicKey }}
       {{- end }}
-      
-      providerID: {{ .Values.providerID }}
+      cloudName: openstack
       flavor: {{ .Values.flavor }}
-      
       image:
         filter:
           name: {{ .Values.image.filter.name }}
+          {{- if .Values.image.filter.tags }}
           tags:
             {{- range $tag := .Values.image.filter.tags }}
             - {{ $tag }}
             {{- end }}
-      
+          {{- end }}
       {{- if gt (len .Values.portOpts) 0 }}
       portOpts:
         {{ .Values.portOpts | toYaml | nindent 8 }}
       {{- end }}
-
       {{- if gt (len .Values.securityGroups) 0 }}
       securityGroups:
-        {{ .Values.securityGroups | toYaml | nindent 8 }}
+        {{ .Values.securityGroups | toYaml | nindent 8 | trim }}
       {{- end }}

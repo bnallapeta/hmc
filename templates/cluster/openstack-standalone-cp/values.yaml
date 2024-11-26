@@ -13,9 +13,9 @@ clusterNetwork:
 
 # openstack cluster parameters
 openstack:
-  authURL: "https://keystone.ic-eu.ssl.mirantis.net/" # Keystone URL
-  region: "RegionOne" # OpenStack region
-  username: "bnallapeta" # OpenStack username
+  authURL: "" # Keystone URL
+  region: "" # OpenStack region
+  username: "" # OpenStack username
   password: "" # OpenStack password
   useApplicationCredentials: false # set to true if using application credentials instead of username/password
   applicationCredentialID: "" # OpenStack application credential ID (if applicable)
@@ -36,8 +36,8 @@ bastion:
         name: "" # Name of the image
 
 # Determines whether OpenStack security groups for the cluster will be managed by the OpenStack provider or specfic rules will be provided
-# managedSecurityGroups:
-#   allNodesSecurityGroupRules: [] # Security group rules for all nodes
+managedSecurityGroups:
+  allowAllInClusterTraffic: false
 
 # managedSubnets:
 #   - cidr: ""
@@ -53,20 +53,20 @@ apiServerLoadBalancer:
   enabled: true
 
 # If ExternalNetwork is not defined or is empty the controller will use any existing external network as long as there is only one.
-# externalNetwork:
-#   id: ""
+externalNetwork:
+  filter:
+    name: "public"
 
 # openstack control plane parameters
 controlplane:
-  sshPublicKey: "bnr-test"  # SSH public key for accessing nodes
+  sshPublicKey: ""  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
-  flavor: "m1.medium"  # OpenStack flavor for instance size
+  flavor: ""  # OpenStack flavor for instance size
   image:
     filter:
-      name: "ubuntu-2204-kube-v1.30.5"  # Name of the image
+      name: ""  # Name of the image that is available on OpenStack
   portOpts: []  # Ports to be attached to the server instance
   securityGroups:
-    # - id: ""  # UUID of the security group
     - filter:
         name: "default"  # Name of the security group to filter by (replace with appropriate name)
         description: ""  # Optional: description for filtering
@@ -74,12 +74,12 @@ controlplane:
 
 # openstack worker parameters
 worker:
-  sshPublicKey: "bnr-test"  # SSH public key for accessing nodes
+  sshPublicKey: ""  # SSH public key for accessing nodes
   providerID: ""  # Unique ID for the instance provider
   flavor: "m1.medium"  # OpenStack flavor for instance size
   image:
     filter:
-      name: "ubuntu-2204-kube-v1.30.5"  # Name of the image
+      name: ""  # Name of the image that is available on OpenStack
   portOpts: []  # Ports to be attached to the server instance
   securityGroups:
     # - id: ""  # UUID of the security group
@@ -88,13 +88,6 @@ worker:
         description: ""  # Optional: description for filtering
         projectID: ""  # Optional: project ID for filtering
 
-# K0smotron parameters
-k0smotron:
-  service:
-    type: LoadBalancer # Service type for exposing control plane
-    apiPort: 6443 # API server port
-    konnectivityPort: 8132 # Konnectivity server port
-
 # K0s parameters
 k0s:
-  version: v1.31.1+k0s.1 # K0s version
+  version: v1.30.5+k0s.0 # K0s version

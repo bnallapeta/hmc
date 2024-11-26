@@ -12,12 +12,10 @@ spec:
   identityRef:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  
   {{- if .Values.network }}
   network:
     {{- toYaml .Values.network | nindent 4 }}
   {{- end }}
-
   {{- if .Values.bastion.enabled }}
   {{- with .Values.bastion.spec }}
   bastion:
@@ -25,22 +23,18 @@ spec:
       {{- toYaml . | nindent 8 }}
   {{- end }}
   {{- end }}
-
   {{- if .Values.managedSecurityGroups }}
   managedSecurityGroups:
     {{- toYaml .Values.managedSecurityGroups | nindent 4 }}
   {{- end }}
-
   {{- if .Values.managedSubnets }}
   managedSubnets:
     {{- toYaml .Values.managedSubnets | nindent 4 }}
   {{- end }}
-
   {{- if .Values.apiServerLoadBalancer }}
   apiServerLoadBalancer:
     {{- toYaml .Values.apiServerLoadBalancer | nindent 4 }}
   {{- end }}
-  
   {{- if .Values.externalNetwork }}
   externalNetwork:
     {{- toYaml .Values.externalNetwork | nindent 4 }}
