@@ -761,6 +761,25 @@ func (r *ManagedClusterReconciler) reconcileCredentialPropagation(ctx context.Co
 				Reason:  hmc.SucceededReason,
 				Message: "vSphere CCM credentials created",
 			})
+		case "openstack":
+			l.Info("OpenStack creds propagation start")
+			if err := credspropagation.PropagateOpenStackSecrets(ctx, propnCfg); err != nil {
+				errMsg := fmt.Sprintf("failed to create OpenStack CCM credentials: %s", err)
+				apimeta.SetStatusCondition(managedCluster.GetConditions(), metav1.Condition{
+					Type:    hmc.CredentialsPropagatedCondition,
+					Status:  metav1.ConditionFalse,
+					Reason:  hmc.FailedReason,
+					Message: errMsg,
+				})
+				return errors.New(errMsg)
+			}
+
+			apimeta.SetStatusCondition(managedCluster.GetConditions(), metav1.Condition{
+				Type:    hmc.CredentialsPropagatedCondition,
+				Status:  metav1.ConditionTrue,
+				Reason:  hmc.SucceededReason,
+				Message: "OpenStack CCM credentials created",
+			})
 		default:
 			apimeta.SetStatusCondition(managedCluster.GetConditions(), metav1.Condition{
 				Type:    hmc.CredentialsPropagatedCondition,
