@@ -18,59 +18,29 @@ import (
 	"context"
 	"fmt"
 
-	hmc "github.com/Mirantis/hmc/api/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	hmc "github.com/Mirantis/hmc/api/v1alpha1"
 )
 
-func PropagateOpenStackSecrets(ctx context.Context, cfg *PropagationCfg) error {
-	openstackManagedCluster := &hmc.ManagedCluster{}
-	if err := cfg.Client.Get(ctx, client.ObjectKey{
-		Name:      cfg.ManagedCluster.Name,
-		Namespace: cfg.ManagedCluster.Namespace,
-	}, openstackManagedCluster); err != nil {
-		return fmt.Errorf("failed to get ManagedCluster %s: %w", cfg.ManagedCluster.Name, err)
-	}
-
-	openstackCredential := &hmc.Credential{}
-	if err := cfg.Client.Get(ctx, client.ObjectKey{
-		Name:      openstackManagedCluster.Spec.Credential,
-		Namespace: openstackManagedCluster.Namespace,
-	}, openstackCredential); err != nil {
-		return fmt.Errorf("failed to get OpenStackCredential %s: %w", cfg.ManagedCluster.Spec.Credential, err)
-	}
-
+func PropagateOpenStackSecrets(ctx context.Context, cfg *PropagationCfg, credential *hmc.Credential) error {
 	// Fetch the secret containing OpenStack credentials
 	openstackSecret := &corev1.Secret{}
-	openstackSecretName := openstackCredential.Spec.IdentityRef.Name
-	openstackSecretNamespace := openstackCredential.Spec.IdentityRef.Namespace
 	if err := cfg.Client.Get(ctx, client.ObjectKey{
-		Name:      openstackSecretName,
-		Namespace: openstackSecretNamespace,
+		Name:      credential.Spec.IdentityRef.Name,
+		Namespace: credential.Spec.IdentityRef.Namespace,
 	}, openstackSecret); err != nil {
-		return fmt.Errorf("failed to get OpenStack secret %s: %w", openstackSecretName, err)
+		return fmt.Errorf("failed to get OpenStack secret %s: %w", credential.Spec.IdentityRef.Name, err)
 	}
 
 	// Generate CCM secret
-	ccmSecret, err := generateOpenStackCCMSecret(openstackSecret)
-	if err != nil {
-		return fmt.Errorf("failed to generate OpenStack CCM secret: %s", err)
-	}
+	ccmSecret := makeSecret("openstack-cloud-config", openstackSecret.Data)
 
 	// Apply CCM config
 	if err := applyCCMConfigs(ctx, cfg.KubeconfSecret, ccmSecret); err != nil {
-		return fmt.Errorf("failed to apply OpenStack CCM secret: %s", err)
+		return fmt.Errorf("failed to apply OpenStack CCM secret: %w", err)
 	}
 
 	return nil
-}
-
-func generateOpenStackCCMSecret(openstackSecret *corev1.Secret) (*corev1.Secret, error) {
-	// Use the data from the fetched secret
-	secretData := map[string][]byte{
-		"clouds.yaml": openstackSecret.Data["clouds.yaml"],
-	}
-
-	return makeSecret("openstack-cloud-config", metav1.NamespaceSystem, secretData), nil
 }
